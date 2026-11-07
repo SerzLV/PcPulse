@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PcPulse.Core/PcPulse.Core.csproj" />
+  <Project Path="PcPulse.Infrastructure/PcPulse.Infrastructure.csproj" />
+  <Project Path="PcPulse.Tests/PcPulse.Tests.csproj" />
+  <Project Path="PcPulse/PcPulse.csproj" />
+</Solution>

@@ -1,0 +1,83 @@
+<!-- Main dashboard; DataContext is MainViewModel. -->
+<Window x:Class="PcPulse.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:PcPulse.Controls"
+        Title="PC Pulse" Width="1020" Height="640" MinWidth="860" MinHeight="580"
+        WindowStartupLocation="CenterScreen" Icon="pack://application:,,,/Assets/PcPulse.ico"
+        Background="{StaticResource BgBrush}" FontFamily="{StaticResource UiFont}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="56" ResizeBorderThickness="6" GlassFrameThickness="0"
+                      CornerRadius="0" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid x:Name="Root" Margin="16,0,16,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Margin="8,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="34" Height="34" CornerRadius="10" Margin="0,0,12,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#4DC9FF" Offset="0"/>
+                            <GradientStop Color="#B47CFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Path Data="M2,12 L7,12 L10,5 L14,19 L17,12 L22,12" Stroke="White" StrokeThickness="2.2"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                          Width="24" Height="24" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="PC PULSE" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding SystemText}" Foreground="{StaticResource MutedBrush}" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <ToggleButton IsChecked="{Binding IsOverlayOn}" Content="{Binding OverlayButtonText}"
+                              Style="{StaticResource PillToggle}" Margin="0,0,8,0"
+                              WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button Content="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                        Style="{StaticResource ChromeButton}" Command="{Binding OpenSettingsCommand}" ToolTip="Настройки"
+                        Margin="0,0,8,0" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button Content="—" Style="{StaticResource ChromeButton}" Command="{Binding MinimizeCommand}"
+                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button Content="✕" Style="{StaticResource ChromeButton}" Command="{Binding CloseCommand}"
+                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Cards: one per MetricCardViewModel -->
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Cards}" Focusable="False">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <c:MetricCard/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" Margin="10,6,10,0">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Width="7" Height="7" Margin="0,0,8,0" VerticalAlignment="Center">
+                    <Ellipse.Fill>
+                        <SolidColorBrush Color="{Binding StatusColor}"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource MutedBrush}" FontSize="12"/>
+            </StackPanel>
+            <TextBlock Text="обновление раз в секунду" HorizontalAlignment="Right"
+                       Foreground="{StaticResource MutedBrush}" FontSize="12"/>
+        </Grid>
+    </Grid>
+</Window>
